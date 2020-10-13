@@ -1,0 +1,37 @@
+{% extends 'template.html' %}
+
+{% block titlte %} 登录{% endblock %}
+
+
+{% block login %}
+    <body>
+		<div class="container" style="margin-top: 3.125rem;">
+			<div style=" width: 400px; margin: auto">
+				<a href="#"><img src="../static/admin/img/logo.png" class="img-fluid" ;></a>
+			</div>
+		</div>
+		<div class="container" style="margin-top:3.125rem;">
+			<div style=" width: 300px; margin: auto">
+				  <form action="#" method="post">
+					<div class="form-group">
+					  <label for="usr">用户名:</label>
+					  <input type="text" class="form-control" id="usr">
+					</div>
+					<div class="form-group">
+					  <label for="pwd1">密码:</label>
+					  <input type="password" class="form-control" id="pwd1">
+					</div>
+					<div class="form-group">
+					  <label for="pwd2">确认密码:</label>
+					  <input type="password" class="form-control" id="pwd2">
+					</div>
+					<button type="submit" class="btn btn-primary"  style="margin-left:20px; float:right">注册</button>
+				  </form>
+			</div>
+		</div>
+	</body>
+{% endblock %}
+
+
+
+
