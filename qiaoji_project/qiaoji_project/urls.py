@@ -26,6 +26,7 @@ from . import views
 urlpatterns = [
     path('lab/',include('lab_manage.urls')),
     # path('admin/', admin.site.urls),
+    path('login/',views.redirect_login),
     re_path('^$', views.page_login),
     # re_path(r'^api/auth/token/obtain/$', TokenObtainPairView.as_view()),    # 需要添加的内容
     # re_path(r'^api/auth/token/refresh/$', TokenRefreshView.as_view()),    # 需要添加的内容

@@ -29,7 +29,7 @@
 		<div class="row" style="margin-top: 1.25rem;">
 			<input type="text" name="code" id="code" placeholder='搜索设备(区分大小写)' class="offset-7" style="margin-top: 0.625rem;"/>
 			<button type="button" class="btn btn-primary" style="margin-top: 0.625rem;">搜索</button>
-			<button class="btn btn-primary offset-1" type="button" style=" margin-top: 10px" onclick="location='#'">添加</button>
+			<button class="btn btn-primary offset-1" type="button" style=" margin-top: 10px" onclick="location='add'">添加</button>
 		</div>
 	    
 	  <br>
@@ -48,7 +48,7 @@
 	    <tbody>
 	    {% for item in data %}
 	    <tr>
-	        <td>{{ item.order }}</td>
+	        <td>{{ item.order_name }}</td>
 			<td><button>{{ item.code }}</button></td>
 	        <td>{{ item.test_name }}</td>
 	        <td>{{ item.content }}</td>

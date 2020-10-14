@@ -1,7 +1,9 @@
 from django.http import JsonResponse
 from . import models
 from .val_session import *
-from django.shortcuts import render,HttpResponse
+from django.shortcuts import render,HttpResponse,redirect
+import time,datetime
+
 
 # 注册页（未开放）
 def page_registered(request):
@@ -33,8 +35,8 @@ def login(request):
 # 退出登录
 def out_login(request):
     try:
-        del request.session['user_id']
-        return render(request, 'login.html', {'msg': '您已退出，请重新登录'})
+        request.session.flush()
+        return redirect('/lab/login', {'msg': '您已退出，请重新登录'})
     except:
         return HttpResponse('操作失败')
 
@@ -50,13 +52,48 @@ def page_lab(request):
     return render(request, 'lab_manage/lab_manager.html', {'data':data,'username':username})
 
 
-# # 添加页渲染
+# 添加页渲染
 # @ValidationSession
-# def create_new_order(request):
-#     return render(request,'lab_manage/create.html')
-#
-#
-# # 修改密码
+def new_order(request):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return render(request, 'login.html', {'msg': '您的登录已过期'})
+    return render(request,'lab_manage/create.html')
+
+
+# 添加新订单
+def create_order(request):
+    if request.method =='POST':
+        order_name = request.POST.get('order_name')
+        data = models.TestInformation.objects.filter(order_name=order_name).first()
+        if data:
+            return JsonResponse({'msg':'单号已存在'})
+        test_name = request.POST.get('order_name')
+        content = request.POST.get('content')
+        number = request.POST.get('number')
+        code = request.POST.get('code')
+        customer_name = request.POST.get('customer_name')
+        tester_name = request.POST.get('tester_name')
+        state = '未开始'
+        note = request.POST.get('note')
+        result = models.TestInformation.objects.create(order_name=order_name,
+                                                       test_name=test_name,
+                                                       content=content,
+                                                       number=number,
+                                                       code=code,
+                                                       customer_name=customer_name,
+                                                       tester_name=tester_name,
+                                                       state=state,
+                                                       note=note)
+        result.save()
+        return JsonResponse({'msg':'创建成功'})
+
+
+# 点击测试项开始按钮动作
+# def order_begin(request):
+
+
+# 修改密码
 # def update_pwd(request):
 #     return render(request,'')
 
@@ -82,7 +119,14 @@ def delete_order(request,order_id):
 # # 订单开始
 # def update_state(request,order_id):
 #     data = models.TestInformation.objects.filter(id=order_id)
-#     state = data.state
-#     if state == '进行中':
-#         state = ''
-#         pass
+
+
+# 订单结束
+# def  finish_state(request,order_id):
+#     end_time = datetime.datetime
+
+
+# 查看设备
+def select_equipment(request,equipment_id):
+    pass
+

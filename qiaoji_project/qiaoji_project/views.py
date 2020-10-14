@@ -10,6 +10,9 @@ def page_login(request):
         return render(request,'login.html')
     return render(request,'index.html',{'user_id':user_id})
 
+def redirect_login(request):
+    return redirect('/lab/login')
+
 def page_registered(request):
     return render(request,'registered.html')
 

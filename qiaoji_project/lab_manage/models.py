@@ -1,9 +1,3 @@
-from django.db import models
-
-# Create your models here.
-
-
-
 # This is an auto-generated Django model module.
 # You'll have to do the following manually to clean this up:
 #   * Rearrange models' order
@@ -134,16 +128,16 @@ class DjangoSession(models.Model):
 
 
 class TestInformation(models.Model):
-    order = models.CharField(max_length=50, blank=True, null=True)
-    test_name = models.CharField(max_length=100, blank=True, null=True)
-    content = models.CharField(max_length=500, blank=True, null=True)
-    number = models.IntegerField(blank=True, null=True)
-    code = models.CharField(max_length=200, blank=True, null=True)
-    customer_name = models.CharField(max_length=50, blank=True, null=True)
-    tester_name = models.CharField(max_length=50, blank=True, null=True)
+    order_name = models.CharField(unique=True, max_length=50)
+    test_name = models.CharField(max_length=100)
+    content = models.CharField(max_length=500)
+    number = models.IntegerField()
+    code = models.CharField(max_length=200)
+    customer_name = models.CharField(max_length=50)
+    tester_name = models.CharField(max_length=50)
     start_time = models.DateTimeField(blank=True, null=True)
     end_time = models.DateTimeField(blank=True, null=True)
-    state = models.CharField(max_length=20, blank=True, null=True)
+    state = models.CharField(max_length=20)
     note = models.CharField(max_length=500, blank=True, null=True)
 
     class Meta:
@@ -161,3 +155,4 @@ class UserTable(models.Model):
     class Meta:
         managed = False
         db_table = 'user_table'
+
