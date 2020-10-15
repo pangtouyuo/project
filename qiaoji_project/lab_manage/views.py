@@ -24,7 +24,9 @@ def out_login(request):
 def page_lab(request):
     user_id = request.session.get('user_id')
     if not user_id:
-        return redirect('/', {'msg': '您的登录已过期'})
+        request.session['login_msg'] = '您的登录已过期'
+        request.session.set_expiry(0)
+        return redirect('/')
     username = models.UserTable.objects.filter(user_id=user_id).first().username
     data = models.TestInformation.objects.all().values()
     return render(request, 'lab_manage/lab_manager.html', {'data':data,'username':username})
@@ -35,7 +37,9 @@ def page_lab(request):
 def new_order(request):
     user_id = request.session.get('user_id')
     if not user_id:
-        return render(request, 'login.html', {'msg': '您的登录已过期'})
+        request.session['login_msg'] = '您的登录已过期'
+        request.session.set_expiry(0)
+        return redirect('/')
     return render(request,'lab_manage/create.html')
 
 
@@ -54,16 +58,7 @@ def create_order(request):
         tester_name = request.POST.get('tester_name')
         state = '未开始'
         note = request.POST.get('note')
-        result = models.TestInformation.objects.create(order_name=order_name,
-                                                       test_name=test_name,
-                                                       content=content,
-                                                       number=number,
-                                                       code=code,
-                                                       customer_name=customer_name,
-                                                       tester_name=tester_name,
-                                                       state=state,
-                                                       note=note)
-        result.save()
+
         return JsonResponse({'msg':'创建成功'})
 
 
@@ -71,16 +66,42 @@ def create_order(request):
 # def order_begin(request):
 
 
-# 修改密码
-# def update_pwd(request):
-#     return render(request,'')
+# 修改密码页渲染
+def change_pwd(request):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        request.session['login_msg'] = '您的登录已过期'
+        request.session.set_expiry(0)
+        return redirect('/')
+    return render(request,'lab_manage/change_pwd.html',{'user_id':user_id})
+
+
+# 修改密码动作
+def update_pwd(request):
+    if request.method == 'POST':
+        user_id = request.POST.get('user_id')
+        pwd_1 = request.POST.get('pwd1')
+        pwd_2 = request.POST.get('pwd2')
+        pwd_3 = request.POST.get('pwd3')
+        user_data = models.UserTable.objects.filter(user_id=user_id).first()
+        if not user_data:
+            return HttpResponse('未知错误')
+        old_pwd = user_data.password
+        if pwd_1 != old_pwd:
+            return HttpResponse('旧密码错误')
+        if pwd_2 != pwd_3:
+            return HttpResponse('两次输入的新密码不一致')
+        models.UserTable.objects.filter(user_id=user_id).update(password=pwd_2)
+        return HttpResponse('新密码修改成功')
 
 
 # 详情页渲染
 def details(request,order_id):
     user_id = request.session.get('user_id')
     if not user_id:
-        return render(request, 'login.html', {'msg': '您的登录已过期'})
+        request.session['login_msg'] = '您的登录已过期'
+        request.session.set_expiry(0)
+        return redirect('/')
     data = models.TestInformation.objects.filter(id=order_id).values()
     return render(request,'lab_manage/details.html',{'data':data})
 
@@ -90,7 +111,6 @@ def delete_order(request,order_id):
     try:
         models.TestInformation.objects.filter(id=order_id).delete()
         return JsonResponse({'msg':'删除成功'})
-
     except:
         return JsonResponse({'msg':'删除失败'})
 

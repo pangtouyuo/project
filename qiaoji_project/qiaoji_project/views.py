@@ -36,7 +36,7 @@ def login(request):
         request.session['user_id'] = user_id
         request.session.set_expiry(3600)
         request.session['login_msg'] = '登录成功'
-        request.session.set_expiry(0)
+        # request.session.set_expiry(0)
         return redirect('/')  # 登录成功，重定向主页
     else:
         return HttpResponse('您的地址有误')
