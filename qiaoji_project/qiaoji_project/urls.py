@@ -25,11 +25,7 @@ from . import views
 
 urlpatterns = [
     path('lab/',include('lab_manage.urls')),
-    # path('admin/', admin.site.urls),
-    path('login/',views.redirect_login),
-    re_path('^$', views.page_login),
-    # re_path(r'^api/auth/token/obtain/$', TokenObtainPairView.as_view()),    # 需要添加的内容
-    # re_path(r'^api/auth/token/refresh/$', TokenRefreshView.as_view()),    # 需要添加的内容
-    # re_path(r'^api/test/$', TestView.as_view()),    # 添加测试views的路由
+    path('login/',views.login),       # 登录动作
+    re_path('^$', views.page_login),  # 默认跳转
 
 ]

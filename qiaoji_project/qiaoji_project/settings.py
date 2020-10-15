@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'lab_manage',
-    'rest_framework'
+    'rest_framework',
+    'qiaoji_project'
 ]
 
 MIDDLEWARE = [

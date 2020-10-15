@@ -9,44 +9,22 @@ import time,datetime
 def page_registered(request):
     return render(request,'registered.html')
 
-
-# 登录动作
-def login(request):
-    if request.method == 'POST':
-        password = request.POST.get('password')
-        username = request.POST.get('username')
-        data = models.UserTable.objects.filter(username=username).first()
-        if not data:
-            return render(request,'login.html',{'msg':'用户名不存在'})
-        user_id = data.user_id
-        pwd = data.password
-        if password != pwd:
-            return render(request,'login.html',{'msg':'密码错误'})
-        request.session['user_id'] = user_id
-        request.session.set_expiry(3600)
-        return render(request,'index.html', {'msg': '登陆成功','user_id':user_id})
-    else:
-        user_id = request.session.get('user_id')
-        if not user_id:
-            return render(request,'login.html',{'msg':'请先登录'})
-        return render(request,'index.html',{'msg':'你好'})
-
-
 # 退出登录
 def out_login(request):
     try:
         request.session.flush()
-        return redirect('/lab/login', {'msg': '您已退出，请重新登录'})
+        request.session['login_msg'] = '您已退出，请重新登录'
+        request.session.set_expiry(0)
+        return redirect('/')
     except:
         return HttpResponse('操作失败')
 
 
 # 实验室管理系统主页渲染
-# @ValidationSession
 def page_lab(request):
     user_id = request.session.get('user_id')
     if not user_id:
-        return render(request, 'login.html', {'msg': '您的登录已过期'})
+        return redirect('/', {'msg': '您的登录已过期'})
     username = models.UserTable.objects.filter(user_id=user_id).first().username
     data = models.TestInformation.objects.all().values()
     return render(request, 'lab_manage/lab_manager.html', {'data':data,'username':username})
@@ -112,6 +90,7 @@ def delete_order(request,order_id):
     try:
         models.TestInformation.objects.filter(id=order_id).delete()
         return JsonResponse({'msg':'删除成功'})
+
     except:
         return JsonResponse({'msg':'删除失败'})
 
