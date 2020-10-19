@@ -75,12 +75,33 @@ class AuthUserUserPermissions(models.Model):
 
 
 class CompanyLevel(models.Model):
+    id = models.CharField(primary_key=True, max_length=36)
     company = models.CharField(max_length=50, blank=True, null=True)
     company_level = models.IntegerField(blank=True, null=True)
+    inf_table_name = models.CharField(max_length=50)
 
     class Meta:
         managed = False
         db_table = 'company_level'
+
+
+class CtiInformTable(models.Model):
+    order_name = models.CharField(max_length=50)
+    test_name = models.CharField(max_length=100)
+    content = models.CharField(max_length=500)
+    number = models.IntegerField()
+    code = models.CharField(max_length=200)
+    customer_name = models.CharField(max_length=50)
+    tester_name = models.CharField(max_length=50)
+    start_time = models.DateTimeField(blank=True, null=True)
+    end_time = models.DateTimeField(blank=True, null=True)
+    predict_end_time = models.DateTimeField(blank=True, null=True)
+    state = models.CharField(max_length=20)
+    note = models.CharField(max_length=500, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'cti_inform_table'
 
 
 class DjangoAdminLog(models.Model):
@@ -127,8 +148,8 @@ class DjangoSession(models.Model):
         db_table = 'django_session'
 
 
-class TestInformation(models.Model):
-    order_name = models.CharField(unique=True, max_length=50)
+class IntertekInformTable(models.Model):
+    order_name = models.CharField(max_length=50)
     test_name = models.CharField(max_length=100)
     content = models.CharField(max_length=500)
     number = models.IntegerField()
@@ -137,8 +158,86 @@ class TestInformation(models.Model):
     tester_name = models.CharField(max_length=50)
     start_time = models.DateTimeField(blank=True, null=True)
     end_time = models.DateTimeField(blank=True, null=True)
+    predict_end_time = models.DateTimeField(blank=True, null=True)
     state = models.CharField(max_length=20)
     note = models.CharField(max_length=500, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'intertek_inform_table'
+
+
+class QiaojiInformTable(models.Model):
+    order_name = models.CharField(max_length=50)
+    test_name = models.CharField(max_length=100)
+    content = models.CharField(max_length=500)
+    number = models.IntegerField()
+    code = models.CharField(max_length=200)
+    customer_name = models.CharField(max_length=50)
+    tester_name = models.CharField(max_length=50)
+    start_time = models.DateTimeField(blank=True, null=True)
+    end_time = models.DateTimeField(blank=True, null=True)
+    predict_end_time = models.DateTimeField(blank=True, null=True)
+    state = models.CharField(max_length=20)
+    note = models.CharField(max_length=500, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'qiaoji_inform_table'
+
+
+class SgsInformTable(models.Model):
+    order_name = models.CharField(max_length=50)
+    test_name = models.CharField(max_length=100)
+    content = models.CharField(max_length=500)
+    number = models.IntegerField()
+    code = models.CharField(max_length=200)
+    customer_name = models.CharField(max_length=50)
+    tester_name = models.CharField(max_length=50)
+    start_time = models.DateTimeField(blank=True, null=True)
+    end_time = models.DateTimeField(blank=True, null=True)
+    predict_end_time = models.DateTimeField(blank=True, null=True)
+    state = models.CharField(max_length=20)
+    note = models.CharField(max_length=500, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'sgs_inform_table'
+
+
+class SkoitoInformTable(models.Model):
+    order_name = models.CharField(max_length=50)
+    test_name = models.CharField(max_length=100)
+    content = models.CharField(max_length=500)
+    number = models.IntegerField()
+    code = models.CharField(max_length=200)
+    customer_name = models.CharField(max_length=50)
+    tester_name = models.CharField(max_length=50)
+    start_time = models.DateTimeField(blank=True, null=True)
+    end_time = models.DateTimeField(blank=True, null=True)
+    predict_end_time = models.DateTimeField(blank=True, null=True)
+    state = models.CharField(max_length=20)
+    note = models.CharField(max_length=500, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'skoito_inform_table'
+
+
+class TestInformation(models.Model):
+    order_name = models.CharField(max_length=50)
+    test_name = models.CharField(max_length=100)
+    content = models.CharField(max_length=500)
+    number = models.IntegerField()
+    code = models.CharField(max_length=200)
+    customer_name = models.CharField(max_length=50)
+    tester_name = models.CharField(max_length=50)
+    start_time = models.DateTimeField(blank=True, null=True)
+    end_time = models.DateTimeField(blank=True, null=True)
+    predict_end_time = models.DateTimeField(blank=True, null=True)
+    state = models.CharField(max_length=20)
+    note = models.CharField(max_length=500, blank=True, null=True)
+    company = models.CharField(max_length=36)
 
     class Meta:
         managed = False
@@ -151,8 +250,8 @@ class UserTable(models.Model):
     password = models.CharField(max_length=50, blank=True, null=True)
     company = models.CharField(max_length=50, blank=True, null=True)
     account_level = models.IntegerField(blank=True, null=True)
+    create_time = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'user_table'
-

@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from . import models
 from .val_session import *
 from django.shortcuts import render,HttpResponse,redirect
-import time,datetime
+import time,datetime,re
 
 
 # 注册页（未开放）
@@ -27,8 +27,18 @@ def page_lab(request):
         request.session['login_msg'] = '您的登录已过期'
         request.session.set_expiry(0)
         return redirect('/')
-    username = models.UserTable.objects.filter(user_id=user_id).first().username
-    data = models.TestInformation.objects.all().values()
+    data = models.UserTable.objects.filter(user_id=user_id).first()
+    username = data.username
+    company_id = data.company
+    table_name = models.CompanyLevel.objects.filter(id=company_id).first().inf_table_name
+    arr = table_name.split('_')
+    res = ''
+    for i in arr:
+        res = res + i[0].upper()+i[1:]
+    if not bool:
+        res = res[0].lower() + res[1:]
+    str = 'models.'+res+'.objects.all().values()'
+    data = eval(str)
     return render(request, 'lab_manage/lab_manager.html', {'data':data,'username':username})
 
 
@@ -58,6 +68,7 @@ def create_order(request):
         tester_name = request.POST.get('tester_name')
         state = '未开始'
         note = request.POST.get('note')
+        dict = {}
 
         return JsonResponse({'msg':'创建成功'})
 
@@ -102,7 +113,17 @@ def details(request,order_id):
         request.session['login_msg'] = '您的登录已过期'
         request.session.set_expiry(0)
         return redirect('/')
-    data = models.TestInformation.objects.filter(id=order_id).values()
+    company_id = models.UserTable.objects.filter(user_id=user_id).first().company
+
+    table_name = models.CompanyLevel.objects.filter(id=company_id).first().inf_table_name
+    arr = table_name.split('_')
+    res = ''
+    for i in arr:
+        res = res + i[0].upper() + i[1:]
+    if not bool:
+        res = res[0].lower() + res[1:]
+    str = 'models.' + res + '.objects.filter(id=order_id).values()'
+    data = eval(str)
     return render(request,'lab_manage/details.html',{'data':data})
 
 
