@@ -3,6 +3,7 @@ from . import models
 from .val_session import *
 from django.shortcuts import render,HttpResponse,redirect
 import time,datetime,re
+import uuid
 
 
 # 注册页（未开放）
@@ -50,16 +51,29 @@ def new_order(request):
         request.session['login_msg'] = '您的登录已过期'
         request.session.set_expiry(0)
         return redirect('/')
-    return render(request,'lab_manage/create.html')
-
+    company_id = models.UserTable.objects.filter(user_id=user_id).first().company
+    data_table = models.CompanyLevel.objects.filter(id=company_id).first().inf_table_name
+    return render(request,'lab_manage/create.html',{'table':data_table})
+    # return HttpResponse('111')
 
 # 添加新订单
 def create_order(request):
     if request.method =='POST':
         order_name = request.POST.get('order_name')
-        data = models.TestInformation.objects.filter(order_name=order_name).first()
+        table_name = request.POST.get('table_name')
+        print(table_name)
+        arr = table_name.split('_')
+        res = ''
+        for i in arr:
+            res = res + i[0].upper() + i[1:]
+        if not bool:
+            res = res[0].lower() + res[1:]
+
+        data_str = 'models.'+res+'.objects.filter(order_name=order_name).first()'
+        print(data_str)
+        data = eval(data_str)
         if data:
-            return JsonResponse({'msg':'单号已存在'})
+            return JsonResponse({'msg':'1'})
         test_name = request.POST.get('order_name')
         content = request.POST.get('content')
         number = request.POST.get('number')
@@ -70,7 +84,7 @@ def create_order(request):
         note = request.POST.get('note')
         dict = {}
 
-        return JsonResponse({'msg':'创建成功'})
+        return JsonResponse({'msg':'2'})
 
 
 # 点击测试项开始按钮动作
