@@ -10,6 +10,7 @@ urlpatterns = [
     path('add',views.new_order),                   # 添加页渲染
     path('change_pwd',views.change_pwd),           # 修改密码页面
     path('change',views.update_pwd),               # 提交修改密码申请
-    path('new',views.create_order),                   # 创建新订单动作
+    path('new',views.create_order),                # 创建新订单动作
+    path('start',views.order_begin),               # 订单开始
     # re_path(r'^api/login/$',views.LoginView.as_view())
 ]

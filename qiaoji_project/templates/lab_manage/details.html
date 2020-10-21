@@ -1,22 +1,88 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>详情页</title>
-</head>
-<body>
-<h1>详情页</h1>
-<p>订单ID：{{ data.first.id }}</p>
-<p>订单号：{{ data.first.order_name }}</p>
-<p>测试名：{{ data.first.test_name }}</p>
-<p>内容：{{ data.first.content }}</p>
-<p>数量：{{ data.first.number }}</p>
-<p>设备名：{{ data.first.code }}</p>
-<p>客户名称：{{ data.first.customer_name }}</p>
-<p>测试员名称：{{ data.first.tester_name }}</p>
-<p>开始时间：{{ data.first.start_time }}</p>
-<p>结束时间：{{ data.first.end_time }}</p>
-<p>状态：{{ data.first.state }}</p>
-<p>备注：{{ data.first.note }}</p>
-</body>
-</html>
+{% extends 'template.html' %}
+
+{% block titlte %} 登录{% endblock %}
+
+{% block body %}
+<div class="container">
+	<h1 style="margin-top: 4.375rem;">详情页</h1>
+	<h1>{{table}}</h1>
+	<p style="">订单ID：{{ data.first.id }}</p>
+	<p>订单号：{{ data.first.order_name }}</p>
+	<p>测试名：{{ data.first.test_name }}</p>
+	<p>内容：{{ data.first.content }}</p>
+	<p>数量：{{ data.first.number }}</p>
+	<p>设备名：{{ data.first.code }}</p>
+	<p>客户名称：{{ data.first.customer_name }}</p>
+	<p>测试员名称：{{ data.first.tester_name }}</p>
+	<p>开始时间：{{ data.first.start_time }}</p>
+	<p>预计结束时间：{{ data.first.predict_end_time }}</p>
+	<p>结束时间：{{ data.first.end_time }}</p>
+	<p>状态：{{ data.first.state }}</p>
+	<p>备注：{{ data.first.note }}</p>
+
+	<button type="button" id="b_start">开始</button>
+	<button type="button" id="b_pause">暂停</button>
+	<button type="button" id="b_run">启动</button>
+	<button type="button" id="b_end">结束</button>
+	<button type="button" id="b_rework">返工</button>
+</div>
+{% endblock %}
+{% block script %}
+	<script type="text/javascript">
+		$(document).ready(function(){
+			
+			$("#b_start").click(function(){
+				$.post("/lab/start",
+					{
+						table_name:"{{table}}",
+						order_id:"{{data.first.id}}"
+					},
+					function(){
+						alert('已开始');
+					});
+			});
+			$("#b_pause").click(function(){
+				$.post("#",
+					{
+						table_name:"{{table}}",
+						order_id:"{{data.first.id}}"
+					},
+					function(){
+						alert('已开始');
+					});
+			});
+			$("#b_run").click(function(){
+				$.post("#",
+					{
+						table_name:"{{table}}",
+						order_id:"{{data.first.id}}"
+					},
+					function(){
+						alert('已开始');
+					});
+			});
+			$("#b_end").click(function(){
+				$.post("#",
+					{
+						table_name:"{{table}}",
+						order_id:"{{data.first.id}}"
+					},
+					function(){
+						alert('已开始');
+					});
+			});
+			$("#b_rework").click(function(){
+				$.post("#",
+					{
+						table_name:"{{table}}",
+						order_id:"{{data.first.id}}"
+					},
+					function(){
+						alert('已开始');
+					});
+			});
+		});
+	</script>
+{% endblock %}
+
+
