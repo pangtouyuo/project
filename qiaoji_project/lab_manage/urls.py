@@ -12,5 +12,8 @@ urlpatterns = [
     path('change',views.update_pwd),               # 提交修改密码申请
     path('new',views.create_order),                # 创建新订单动作
     path('start',views.order_begin),               # 订单开始
+    path('pause',views.pause),                     # 暂停功能
+    path('run',views.start),                       # 重新开始
+    path('order_end',views.order_end),             # 订单结束
     # re_path(r'^api/login/$',views.LoginView.as_view())
 ]

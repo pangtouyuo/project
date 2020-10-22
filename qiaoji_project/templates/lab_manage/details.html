@@ -4,6 +4,7 @@
 
 {% block body %}
 <div class="container">
+	<h1>{{ msg }}</h1>
 	<h1 style="margin-top: 4.375rem;">详情页</h1>
 	<h1>{{table}}</h1>
 	<p style="">订单ID：{{ data.first.id }}</p>
@@ -21,10 +22,10 @@
 	<p>备注：{{ data.first.note }}</p>
 
 	<button type="button" id="b_start">开始</button>
-	<button type="button" id="b_pause">暂停</button>
+	<button type="button" id="b_pause" false>暂停</button>
 	<button type="button" id="b_run">启动</button>
 	<button type="button" id="b_end">结束</button>
-	<button type="button" id="b_rework">返工</button>
+	
 </div>
 {% endblock %}
 {% block script %}
@@ -39,48 +40,42 @@
 					},
 					function(){
 						alert('已开始');
+						$('#b_start').attr("disabled",true);
 					});
 			});
 			$("#b_pause").click(function(){
-				$.post("#",
+				$.post("/lab/pause",
 					{
 						table_name:"{{table}}",
 						order_id:"{{data.first.id}}"
 					},
 					function(){
-						alert('已开始');
+						alert('已暂停');
+						$('#b_pause').attr("disabled",true);
 					});
 			});
 			$("#b_run").click(function(){
-				$.post("#",
-					{
+				$.post("/lab/run",
+					{	
 						table_name:"{{table}}",
-						order_id:"{{data.first.id}}"
+						order_id:"{{data.first.id}}",
+						pause_id:"{{data.first.pause_id}}"
 					},
 					function(){
-						alert('已开始');
+						alert('ok');
 					});
 			});
 			$("#b_end").click(function(){
-				$.post("#",
+				$.post("/lab/order_end",
 					{
 						table_name:"{{table}}",
 						order_id:"{{data.first.id}}"
 					},
 					function(){
-						alert('已开始');
+						alert('ok');
 					});
 			});
-			$("#b_rework").click(function(){
-				$.post("#",
-					{
-						table_name:"{{table}}",
-						order_id:"{{data.first.id}}"
-					},
-					function(){
-						alert('已开始');
-					});
-			});
+			
 		});
 	</script>
 {% endblock %}

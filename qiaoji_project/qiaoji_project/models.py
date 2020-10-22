@@ -129,6 +129,16 @@ class DjangoSession(models.Model):
         db_table = 'django_session'
 
 
+class Equipment(models.Model):
+    id = models.CharField(primary_key=True, max_length=36)
+    equipment_name = models.CharField(max_length=50, blank=True, null=True)
+    company_id = models.CharField(max_length=36, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'equipment'
+
+
 class InformTableCti(models.Model):
     id = models.CharField(primary_key=True, max_length=50)
     order_name = models.CharField(unique=True, max_length=50)
@@ -143,6 +153,7 @@ class InformTableCti(models.Model):
     predict_end_time = models.DateTimeField(blank=True, null=True)
     state = models.CharField(max_length=20)
     note = models.CharField(max_length=500, blank=True, null=True)
+    pause_id = models.CharField(max_length=36, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -163,6 +174,7 @@ class InformTableIntertek(models.Model):
     predict_end_time = models.DateTimeField(blank=True, null=True)
     state = models.CharField(max_length=20)
     note = models.CharField(max_length=500, blank=True, null=True)
+    pause_id = models.CharField(max_length=36, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -183,6 +195,7 @@ class InformTableQiaoji(models.Model):
     predict_end_time = models.DateTimeField(blank=True, null=True)
     state = models.CharField(max_length=20)
     note = models.CharField(max_length=500, blank=True, null=True)
+    pause_id = models.CharField(max_length=36, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -203,6 +216,7 @@ class InformTableSgs(models.Model):
     predict_end_time = models.DateTimeField(blank=True, null=True)
     state = models.CharField(max_length=20)
     note = models.CharField(max_length=500, blank=True, null=True)
+    pause_id = models.CharField(max_length=36, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -223,6 +237,7 @@ class InformTableSkoito(models.Model):
     predict_end_time = models.DateTimeField(blank=True, null=True)
     state = models.CharField(max_length=20)
     note = models.CharField(max_length=500, blank=True, null=True)
+    pause_id = models.CharField(max_length=36, blank=True, null=True)
 
     class Meta:
         managed = False

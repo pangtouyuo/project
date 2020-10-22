@@ -89,7 +89,8 @@ def new_order(request):
     company_id = models.UserTable.objects.filter(user_id=user_id).first().company
     data_table = models.CompanyLevel.objects.filter(id=company_id).first().inf_table_name
     table_name = change_name(data_table)
-    return render(request,'lab_manage/create.html',{'table':table_name})
+    equi_data = models.Equipment.objects.filter(company_id=company_id).values()
+    return render(request,'lab_manage/create.html',{'table':table_name,'equi_data':equi_data})
 
 
 # 添加新订单
@@ -97,20 +98,27 @@ def create_order(request):
     if request.method =='POST':
         order_name = request.POST.get('order_name')
         table_name = request.POST.get('table_name')
+        print(table_name)
         data_str = 'models.'+table_name+'.objects.filter(order_name=order_name).first()'
         data = eval(data_str)
         if data:
             return JsonResponse({'msg':'1'})
-        test_name = request.POST.get('order_name')
+        test_name = request.POST.get('test_name')
         content = request.POST.get('content')
         number = request.POST.get('number')
-        code = request.POST.get('code')
+        code = request.POST.get('equipment_name')
         customer_name = request.POST.get('customer_name')
         tester_name = request.POST.get('tester_name')
         state = '未开始'
+        predict_end_time = request.POST.get('predict_end_time').replace("T", " ")+':00'
         note = request.POST.get('note')
-        dict = {}
-        return JsonResponse({'msg':'2'})
+
+        uid = str(uuid.uuid1())
+        create_str = 'models.'+table_name+'.objects.create(id=uid,order_name=order_name,test_name=test_name,content=content,'
+        create_str = create_str+'number=number,code=code,customer_name=customer_name,tester_name=tester_name,state="未开始",predict_end_time=predict_end_time,note=note)'
+        eval(create_str)
+        str_0 = 'mod'
+        return redirect('details/'+uid)
 
 
 # 删除单号
@@ -152,16 +160,13 @@ def order_begin(request):
     table_name = request.POST.get('table_name')
     order_id = request.POST.get('order_id')
     now_time = time.strftime('%Y-%m-%d %H:%M:%S')
+    print(now_time)
     str1 = 'models.' + table_name + '.objects.filter(id=order_id).update(start_time=now_time)'
     eval(str1)
     str2 = 'models.' + table_name + '.objects.filter(id=order_id).update(state="进行中")'
     eval(str2)
     return JsonResponse({'msg':'success'})
-
-
-# 订单结束
-# def  finish_state(request,order_id):
-#     end_time = datetime.datetime
+    # return redirect('details/'+order_id)
 
 
 # 查看设备
@@ -176,10 +181,51 @@ def pause(request):
         request.session['login_msg'] = '您的登录已过期'
         request.session.set_expiry(0)
         return redirect('/')
-    
+    table_name = request.POST.get('table_name')
+    order_id = request.POST.get('order_id')
+    now_time = time.strftime('%Y-%m-%d %H:%M:%S')
+    this_uid = uuid.uuid1()
+    models.PauseData.objects.create(id=this_uid,order_id=order_id,pause_time=now_time)
+    str_1 = 'models.' + table_name + '.objects.filter(id=order_id).update(state="暂停中")'
+    eval(str_1)
+    str_2 = 'models.' + table_name + '.objects.filter(id=order_id).update(pause_id=this_uid)'
+    eval(str_2)
+    return JsonResponse({'msg': '1111'})
 
 
+# 重新启动
+def start(request):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        request.session['login_msg'] = '您的登录已过期'
+        request.session.set_expiry(0)
+        return redirect('/')
+    table_name = request.POST.get('table_name')
+    order_id = request.POST.get('order_id')
+    pause_id = request.POST.get('pause_id')
+    now_time = time.strftime('%Y-%m-%d %H:%M:%S')
+    models.PauseData.objects.filter(id=pause_id).update(start_time=now_time)
+    str_1 = 'models.' + table_name + '.objects.filter(id=order_id).update(state="进行中")'
+    eval(str_1)
+    return HttpResponse('111')
 
+
+# 结束
+def order_end(request):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        request.session['login_msg'] = '您的登录已过期'
+        request.session.set_expiry(0)
+        return redirect('/')
+    table_name = request.POST.get('table_name')
+    order_id = request.POST.get('order_id')
+    now_time = time.strftime('%Y-%m-%d %H:%M:%S')
+    data = models.PauseData.objects.filter()
+    str_1 = 'models.'+table_name+'.objects.filter(id=order_id).update(end_time=now_time)'
+    eval(str_1)
+    str_2 = 'models.' + table_name + '.objects.filter(id=order_id).update(state="已结束")'
+    eval(str_2)
+    return HttpResponse('1')
 
 
 
