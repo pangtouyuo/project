@@ -47,6 +47,8 @@ def page_lab(request):
     table_name = change_name(table_name)
     str = 'models.'+table_name+'.objects.all().values()'
     data = eval(str)
+    # data = list(data)
+    # return JsonResponse(data,safe=False)
     return render(request, 'lab_manage/lab_manager.html', {'data':data,'username':username})
 
 
@@ -100,6 +102,7 @@ def create_order(request):
         table_name = request.POST.get('table_name')
         print(table_name)
         data_str = 'models.'+table_name+'.objects.filter(order_name=order_name).first()'
+
         data = eval(data_str)
         if data:
             return JsonResponse({'msg':'1'})
@@ -129,10 +132,14 @@ def delete_order(request,order_id):
         request.session.set_expiry(0)
         return redirect('/')
     try:
-        models.TestInformation.objects.filter(id=order_id).delete()
-        return JsonResponse({'msg':'删除成功'})
+        company_id = models.UserTable.objects.filter(user_id=user_id).first().company
+        table_name = models.CompanyLevel.objects.filter(id=company_id).first().inf_table_name
+        table_name = change_name(table_name)
+        str_1 = 'models.'+table_name+'.objects.filter(id=order_id).delete()'
+        eval(str_1)
+        return JsonResponse({'msg':'1'})
     except:
-        return JsonResponse({'msg':'删除失败'})
+        return JsonResponse({'msg':'0'})
 
 
 # 详情页渲染
@@ -221,13 +228,44 @@ def order_end(request):
     order_id = request.POST.get('order_id')
     now_time = time.strftime('%Y-%m-%d %H:%M:%S')
     data = models.PauseData.objects.filter()
-    str_1 = 'models.'+table_name+'.objects.filter(id=order_id).update(end_time=now_time)'
+    str_1 = 'models.' + table_name + '.objects.filter(id=order_id).update(end_time=now_time)'
     eval(str_1)
     str_2 = 'models.' + table_name + '.objects.filter(id=order_id).update(state="已结束")'
     eval(str_2)
     return HttpResponse('1')
 
 
+# 按设备搜索
+def select_order(request):
+    user_id = request.session.get('user_id')
+    equipment_name = request.POST.get('equipment_name')
+    if not user_id:
+        request.session['login_msg'] = '您的登录已过期'
+        request.session.set_expiry(0)
+        return redirect('/')
+
+    data = models.UserTable.objects.filter(user_id=user_id).first()
+    company_id = data.company
+
+    equipment_data = models.Equipment.objects.filter(equipment_name=equipment_name).first()
+    print(equipment_data)
+
+    if not equipment_data:
+        data = ['查无此设备']
+        return JsonResponse(data,safe=False)
+    company_id_eq = equipment_data.company_id
+
+    if company_id != company_id_eq:
+        data = ['查无此设备']
+        return JsonResponse(data, safe=False)
+
+    table_name = models.CompanyLevel.objects.filter(id=company_id).first().inf_table_name
+    table_name = change_name(table_name)
+    str = 'models.'+table_name+'.objects.filter(code=equipment_name).values()'
+    data = eval(str)
+    data = list(data)
+
+    return JsonResponse(data,safe=False)
 
 
 

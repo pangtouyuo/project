@@ -15,5 +15,6 @@ urlpatterns = [
     path('pause',views.pause),                     # 暂停功能
     path('run',views.start),                       # 重新开始
     path('order_end',views.order_end),             # 订单结束
+    path('select',views.select_order),             # 搜索设备
     # re_path(r'^api/login/$',views.LoginView.as_view())
 ]

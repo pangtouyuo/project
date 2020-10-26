@@ -1,3 +1,3 @@
 from MyQR import myqr
 
-myqr.run(words='https://www.baidu.com')
+myqr.run(words='http://baidu.com')

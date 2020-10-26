@@ -1,11 +1,7 @@
 {% extends 'template.html' %}
 
 {% block titlte %} 登录{% endblock %}
-{#<!-- {{#}
-{#	table:要存到的目标表#}
-{#	#}
-{##}
-{# }} -->#}
+
 {% block body %}
 <h1>{{table}}</h1>
 <div class="container" style="margin-top: 3.125rem;">
@@ -26,27 +22,27 @@
 				</div>
 			  <div class="form-group">
 				<label for="order">订单号:</label>
-				<input type="text" class="form-control" id="order_name" name="order_name">
+				<input type="text" class="form-control" id="order_name" name="order_name" autocomplete="off">
 			  </div>
 			  <div class="form-group">
 				<label for="name">测试名称:</label>
-				<input type="text" class="form-control" id="test_name" name="test_name">
+				<input type="text" class="form-control" id="test_name" name="test_name" autocomplete="off">
 			  </div>
 				<div class="form-group">
 				  <label for="content">内容:</label>
-				  <input type="text" class="form-control" id="content" name="content">
+				  <input type="text" class="form-control" id="content" name="content" autocomplete="off">
 				</div>
 				<div class="form-group">
 				  <label for="content">数量:</label>
-				  <input type="text" class="form-control" id="number" name="number">
+				  <input type="text" class="form-control" id="number" name="number" autocomplete="off">
 				</div>
 				<div class="form-group">
 				  <label for="content">客户名称:</label>
-				  <input type="text" class="form-control" id="customer_name" name="customer_name">
+				  <input type="text" class="form-control" id="customer_name" name="customer_name" autocomplete="off">
 				</div>
 				<div class="form-group">
 				  <label for="content">测试员:</label>
-				  <input type="text" class="form-control" id="tester_name" name="tester_name">
+				  <input type="text" class="form-control" id="tester_name" name="tester_name" autocomplete="off">
 				</div>
 				<div class="form-group">
 				  <label for="content">预计结束时间</label>
@@ -54,7 +50,7 @@
 				</div>
 				<div class="form-group">
 				  <label for="content">备注:（选填）</label>
-				  <input type="text" class="form-control" id="note" name="note">
+				  <input type="text" class="form-control" id="note" name="note" autocomplete="off">
 				</div>
 			
 			  <button type="submit" class="btn btn-primary" style="float:right;">创建</button>
